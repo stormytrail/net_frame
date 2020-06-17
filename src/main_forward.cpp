@@ -12,7 +12,9 @@ int main(){
 
 
 	BaseLayer* a = new InnerProductLayer();
-	a->Forward();
+
+	vector<Atom> input,output;
+	a->Forward(input,output);
 
 
 
