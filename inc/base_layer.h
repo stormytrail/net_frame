@@ -12,11 +12,15 @@ public:
 
 	LayerParam layer_param_;
 
+	BaseLayer(){
+		return;
+	};
 
-	BaseLayer(LaterParam &param) : layer_param_(param){
+
+	explicit BaseLayer(const LayerParam& param) : layer_param_(param){
 
 		for (int i = 0;i < param.num_atom;i++){
-			this->atoms_.push_back(Atom(param.atom_shape[i]);
+			this->atoms_.push_back(Atom(param.atom_shapes[i]));
 		}
 
 		return;

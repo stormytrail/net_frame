@@ -5,6 +5,7 @@ enum DATA_STORAGE_ORDER {ROW_FIRST};
 using namespace std;
 
 class Atom{
+public:
 	float* data;
 	vector<int> shape_;
 

@@ -19,3 +19,24 @@
 #endif
 
 
+using namespace std;
+
+class LayerParam{
+public:
+	LayerParam(){}
+
+	explicit LayerParam(const LayerParam& param){
+		this->atom_shapes.assign(param.atom_shapes.begin(),param.atom_shapes.end());
+		this->num_atom = param.atom_shapes.size();
+		return;
+	}
+	explicit LayerParam(const vector<vector<int>> & param){
+		this->atom_shapes.assign(param.begin(),param.end());
+		this->num_atom = param.size();
+		return;
+	}
+
+	vector<vector<int>> atom_shapes;
+	int num_atom;
+};
+
