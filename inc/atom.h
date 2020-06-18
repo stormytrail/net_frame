@@ -11,12 +11,17 @@ public:
 
 	Atom():data(NULL){}
 	Atom(vector<int> vAtomShape){
-		int iDataNum = 1;
+		size_t iDataNum = 1;
+		this->shape_.assign(vAtomShape.begin(),vAtomShape.end());
 		for (int i = 0;i < vAtomShape.size();i++){
-			this->shape_[i] = vAtomShape[i];
 			iDataNum *= vAtomShape[i];
 		}
 		this->data = (float*)malloc(sizeof(float) * iDataNum);
+
+		if (this->data == NULL){
+			cout << "error in initial" << endl;
+		}
+
 		return;
 	}
 

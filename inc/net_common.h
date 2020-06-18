@@ -6,6 +6,8 @@
 #include <map>
 #include <string>
 
+#include  "matrix_operation.h"
+
 #pragma once
 
 #ifdef NET_SPACE_NAME

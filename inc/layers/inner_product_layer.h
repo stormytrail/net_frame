@@ -2,8 +2,8 @@
 
 class InnerProductLayer : public BaseLayer{
 public:
-	virtual void Forward(const vector<Atom>& input,vector<Atom>& output);
-	virtual void Backward(const vector<Atom>& input,const vector<Atom>& output);
+	virtual void Forward(const Atom& input,Atom& output);
+	virtual void Backward(const Atom& input,const Atom& output);
 
 	bool has_bias;
 
