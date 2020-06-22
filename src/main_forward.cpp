@@ -43,7 +43,10 @@ int main(){
 		}
 	}
 
-	a->Forward(input,output);
+	vector<Atom> inputs = {input};
+	vector<Atom> outputs = {output};
+
+	a->Forward(inputs,outputs);
 
 	for (int i = 0;i < 2;i++){
 		for (int j = 0;j < 2;j++){

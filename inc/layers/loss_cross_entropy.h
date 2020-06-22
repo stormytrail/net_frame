@@ -1,15 +1,16 @@
 #include "base_layer.h"
 
-class SoftmaxLayer : public BaseLayer{
+class CrossEntropyLayer : public BaseLayer{
 public:
+	//input[0] groundtruth;input[1] prediction
 	virtual void Forward(const vector<Atom>& input,vector<Atom>& output);
 	virtual void Backward(const vector<Atom>& input,const vector<Atom>& output);
 
-	SoftmaxLayer() : BaseLayer(){
-		return;
-	}
-	explicit SoftmaxLayer(const LayerParam& param) : BaseLayer(param){
+	CrossEntropyLayer() : BaseLayer(){
 		return;
 	}
 
+	explicit CrossEntropyLayer(const LayerParam& param) : BaseLayer(param){
+		return;
+	}
 };

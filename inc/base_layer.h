@@ -5,8 +5,8 @@ enum LAYER_TYPE {conv2d,maxpooling2d};
 
 class BaseLayer{
 public:
-	virtual void Forward(const Atom& input,Atom& output) = 0;
-	virtual void Backward(const Atom& input,const Atom& output) = 0;
+	virtual void Forward(const vector<Atom>& input,vector<Atom>& output) = 0;
+	virtual void Backward(const vector<Atom>& input,const vector<Atom>& output) = 0;
 
 	vector<Atom> atoms_;
 
