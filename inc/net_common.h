@@ -20,8 +20,11 @@
 #define NETSPACE_USE
 #endif
 
-
 using namespace std;
+
+#ifndef MAX_BATCH_SIZE
+#define MAX_BATCH_SIZE 64
+#endif
 
 class LayerParam{
 public:

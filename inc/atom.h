@@ -9,6 +9,8 @@ public:
 	float* data;
 	vector<int> shape_;
 
+	float* diff_;
+
 	Atom():data(NULL){}
 	Atom(vector<int> vAtomShape){
 		size_t iDataNum = 1;
@@ -20,6 +22,15 @@ public:
 
 		if (this->data == NULL){
 			cout << "error in initial" << endl;
+		}
+
+		iDataNum = MAX_BATCH_SIZE;
+		for (int i = 1;i < vAtomShape.size();i++){
+			iDataNum *= vAtomShape[i];
+		}
+		this->diff_ = (float*)malloc(sizeof(float) * iDataNum);
+		if (this->diff_ == NULL){
+			cout << "error in diff_" << endl;
 		}
 
 		return;
