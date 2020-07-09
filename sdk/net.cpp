@@ -12,6 +12,40 @@ void Net::Init(vector<LayerParam> layer_params){
 	this->num_layers = layer_params.size();
 	this->layers_ = (BaseLayer*)malloc(sizeof(BaseLayer) * this->num_layers);
 
+	for (size_t i = 0;i < num_layers;i++){
+		BaseLayer* cur_layer = (BaseLayer*)LayerGenerator(layer_params[i]);
+		this->layer_index.insert(pair<string,int> (cur_layer->layer_name,i));
+
+		{
+			vector<Atom*> pointer_cur_out;
+			for (size_t j = 0;j < layer_params[i].output_size();j++){
+				Atom* pointer_atom = new Atom();
+				this->atoms.push_back(pointer_atom);
+				pointer_cur_out.push_back(pointer_atom);
+			}
+			this->pointer_out_atom.push_back(pointer_cur_out);
+		}
+
+		{
+			if (cur_layer->layer_name == ""){
+				continue;
+			}
+
+			vector<Atom*> pointer_cur_in;
+			for (size_t j = 0;j < layer_params[i].input_size();j++){
+				size_t bottom_layer_index = layer_index[layer_params[i].bottom_layer_names[j]];
+				for (size_t pos = 0;pos < pointer_out_atom[bottom_layer_index].size();pos++){
+					pointer_cur_in.push_back(pointer_out_atom[bottom_layer_index][pos]);
+				}
+			}
+			pointer_in_atom.push_back(pointer_cur_in);
+
+		}
+
+	}
+
+
+
 	//if one layer just generate one atom at a time
 	//what if the layer generate multi atoms,like rnn, lstm?
 	//whatever, finish the stage 1 first
