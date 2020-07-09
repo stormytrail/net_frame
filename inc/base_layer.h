@@ -11,11 +11,11 @@ public:
 	vector<Atom> atoms_;
 
 	LayerParam layer_param_;
+	string layer_name;
 
 	BaseLayer(){
 		return;
 	};
-
 
 	explicit BaseLayer(const LayerParam& param) : layer_param_(param){
 		for (int i = 0;i < param.num_atom;i++){
@@ -23,5 +23,4 @@ public:
 		}
 		return;
 	}
-
 };
