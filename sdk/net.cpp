@@ -52,6 +52,7 @@ void Net :: Init(vector<LayerParam*> layer_params){
 }
 
 void Net :: ExecuteSequence(){
+
 	map<string,vector<string>> in_degree;
 	map<string,vector<string>> out_degree;
 
@@ -74,10 +75,6 @@ void Net :: ExecuteSequence(){
 		
 		if (in_degree[cur_name].size() == 0){seq_name.push_back(cur_name);}
 	}
-
-	
-
-
 
 	return;
 }

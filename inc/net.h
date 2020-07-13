@@ -29,8 +29,5 @@ private:
 	vector<Atom*> data_entries;
 	map<string,int> entries_index;
 
-
 	BaseLayer** excute_seq;
-
-
 };
