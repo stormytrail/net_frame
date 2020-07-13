@@ -1,6 +1,6 @@
 #include "layers/inner_product_layer.h"
 
-void InnerProductLayer :: Forward(const vector<Atom>& input,vector<Atom>& output){
+void InnerProductLayer :: Forward(const vector<Atom*>& input,const vector<Atom*>& output){
 	{
 		//affine
 		size_t M = input[0].shape_[0];

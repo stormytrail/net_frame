@@ -26,22 +26,27 @@ using namespace std;
 #define MAX_BATCH_SIZE 64
 #endif
 
+typedef enum{INPUT_LAYER,
+SOFTMAX_LAYER,INNER_PRODUCT_LAYER,SIGMOID_LOSS_LAYER} LAYER_TYPE; 
+
 class LayerParam{
 public:
-	LayerParam(){}
+	LayerParam();
+	explicit LayerParam(const LayerParam& layer_param);
+private:
+	//layer_tag
+	LAYER_TYPE layer_type_;
+	string layer_name_;
 
-	explicit LayerParam(const LayerParam& param){
-		this->atom_shapes.assign(param.atom_shapes.begin(),param.atom_shapes.end());
-		this->num_atom = param.atom_shapes.size();
-		return;
-	}
-	explicit LayerParam(const vector<vector<int>> & param){
-		this->atom_shapes.assign(param.begin(),param.end());
-		this->num_atom = param.size();
-		return;
-	}
+	//input/output names
+	vector<string> input_atom_names;
+	vector<string> output_atom_names;
 
-	vector<vector<int>> atom_shapes;
-	int num_atom;
+	//
+	vector<int> input_layer_names;
+
+	//parameter shape
+	int param_num_;
+	vector<vector<int> > param_shape_;
 };
 

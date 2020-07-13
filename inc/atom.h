@@ -6,40 +6,55 @@ using namespace std;
 
 class Atom{
 public:
-	float* data;
+	string atom_name_;
 	vector<int> shape_;
 
+	float* data;
 	float* diff_;
 
+	bool updatable;
+
+	//constructed function
 	Atom():data(NULL){}
-	Atom(vector<int> vAtomShape){
-		size_t iDataNum = 1;
-		this->shape_.assign(vAtomShape.begin(),vAtomShape.end());
-		for (int i = 0;i < vAtomShape.size();i++){
-			iDataNum *= vAtomShape[i];
-		}
-		this->data = (float*)malloc(sizeof(float) * iDataNum);
+	explicit Atom(const AtomParam);
 
-		if (this->data == NULL){
-			cout << "error in initial" << endl;
-		}
+	//malloc space for data and diff_
+	void Init()
 
-		iDataNum = MAX_BATCH_SIZE;
-		for (int i = 1;i < vAtomShape.size();i++){
-			iDataNum *= vAtomShape[i];
-		}
-		this->diff_ = (float*)malloc(sizeof(float) * iDataNum);
-		if (this->diff_ == NULL){
-			cout << "error in diff_" << endl;
-		}
+	//use diff_ to update data
+	void Update()
 
-		return;
-	}
+	//free the space of data and diff_
+	void Clear();
 
-//	~Atom(){
-//		free(this->data);
-//		this->data = NULL;
-//		return;
-//	}
-
+	//set data with another Atom, and set the data-pointer of source Atom to NULL
+	void SetVal(const Atom* val);
 };
+
+Atom::Atom()
+void Atom::Atom(const AtomParam){
+
+	return;
+}
+
+void Atom::Init(){
+
+	return;
+}
+
+void Atom:: Clear(){
+	free(this->data);
+	this->data = NULL;
+	free(this->diff_);
+	this->diff_ = NULL;
+
+	return;
+}
+
+void Atom::SetVal(const Atom* val){
+	this->shape_.assign();
+	this->data = val -> data;
+	val -> data = NULL;
+
+	return;
+}
