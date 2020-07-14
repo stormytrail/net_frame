@@ -26,6 +26,8 @@ void Net :: Init(vector<LayerParam*> layer_params){
 			intermediate_atoms_.push_back(p_cur_atom);
 
 			p_out_atom[i].push_back(p_cur_atom);
+
+			outatom_2_layer_.insert(pair<string,string> (atom_name,layer_params[i]->layer_name_));
 		}
 	}
 
@@ -65,13 +67,17 @@ void Net :: ExecuteSequence(){
 	for (size_t pos_layer = 0;pos_layer < layer_nums_;pos_layer++){
 		string &cur_name = layers_[pos_layer]->layer_name;
 
-		size_t in_layer_num = layer_[pos_layer].input_layer_names.size();
-		for (size_t in_layer = 0;in_layer < in_layer_num;in_layer++){
-			string &in_layer_name = layer_[pos_layer].input_layer_names[in_layer];
+		size_t in_atom_num = layers_->layer_param_.input_atom_names.size();
 
-			in_degree[cur_name].push_back(in_layer_namme);
-			out_degree[in_layer_name].push_back(cur_name);
+		for (size_t pos_atom = 0;pos_atom < in_atom_num;pos_atom++){
+			in_degree[cur_name].push_back(outatom_2_layer[]);
+			
+
+
 		}
+
+
+
 		
 		if (in_degree[cur_name].size() == 0){seq_name.push_back(cur_name);}
 	}

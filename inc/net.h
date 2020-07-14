@@ -25,6 +25,9 @@ private:
 	vector<vector<Atom*> > p_out_atom;
 	vector<vector<Atom*> > p_in_atom;
 
+
+	map<string,string> outatom_2_layer_;
+
 	//pointer data inputs
 	vector<Atom*> data_entries;
 	map<string,int> entries_index;
