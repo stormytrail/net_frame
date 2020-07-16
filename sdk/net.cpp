@@ -1,6 +1,8 @@
 #include "net.h"
 
 Net::Net(){
+	srand(time(0));
+
 	this->layers_nums_ = 0;
 	this->layers_ = NULL;
 
@@ -9,7 +11,7 @@ Net::Net(){
 
 void Net :: Init(vector<LayerParam*> layer_params){
 	this->layer_nums_ = layer_params.size();
-	this->layers_ = (BaseLayer**)malloc(sizeof(BaseLayeri*) * layer_nums_);
+	this->layers_ = (BaseLayer**)malloc(sizeof(BaseLayer*) * layer_nums_);
 
 	this->p_in_atom.resize(layer_nums_);
 	this->p_out_atom.resize(layer_nums_);
@@ -54,7 +56,7 @@ void Net :: Init(vector<LayerParam*> layer_params){
 }
 
 void Net :: ExecuteSequence(){
-
+/*
 	map<string,vector<string>> in_degree;
 	map<string,vector<string>> out_degree;
 
@@ -71,17 +73,11 @@ void Net :: ExecuteSequence(){
 
 		for (size_t pos_atom = 0;pos_atom < in_atom_num;pos_atom++){
 			in_degree[cur_name].push_back(outatom_2_layer[]);
-			
-
-
 		}
 
-
-
-		
 		if (in_degree[cur_name].size() == 0){seq_name.push_back(cur_name);}
 	}
-
+*/
 	return;
 }
 

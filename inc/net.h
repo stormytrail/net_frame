@@ -1,5 +1,6 @@
 #include "net_common.h"
 
+#pragma once
 class Net{
 public:
 	//function
@@ -13,7 +14,7 @@ public:
 	void Forward(float& loss);
 	void Backward();
 
-private:
+//private:
 	//layers
 	size_t layer_nums_;
 	BaseLayer** layers_;

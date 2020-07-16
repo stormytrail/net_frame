@@ -6,6 +6,8 @@
 #include <map>
 #include <string>
 
+#include <time.h>
+
 #include  "matrix_operation.h"
 
 #pragma once
@@ -26,14 +28,14 @@ using namespace std;
 #define MAX_BATCH_SIZE 64
 #endif
 
-typedef enum{INPUT_LAYER,
-SOFTMAX_LAYER,INNER_PRODUCT_LAYER,SIGMOID_LOSS_LAYER} LAYER_TYPE; 
+enum LAYER_TYPE {INPUT_LAYER,
+SOFTMAX_LAYER,INNER_PRODUCT_LAYER,SIGMOID_LOSS_LAYER}; 
 
 class LayerParam{
 public:
-	LayerParam();
+	LayerParam(){};
 	explicit LayerParam(const LayerParam& layer_param);
-private:
+//private:
 	//layer_tag
 	LAYER_TYPE layer_type_;
 	string layer_name_;
@@ -48,5 +50,6 @@ private:
 	//parameter shape
 	int param_num_;
 	vector<vector<int> > param_shape_;
+
 };
 

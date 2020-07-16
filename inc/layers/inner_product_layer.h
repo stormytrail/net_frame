@@ -1,19 +1,16 @@
 #include "base_layer.h"
 
+#pragma once
+
 class InnerProductLayer : public BaseLayer{
 public:
-	virtual void Forward(const vector<Atom*>& input,const vector<Atom*>& output);
-	virtual void Backward(const vector<Atom*>& input,const vector<Atom*>& output);
+	virtual void Forward(vector<Atom*>& input,vector<Atom*>& output);
+	virtual void Backward(vector<Atom*>& input,vector<Atom*>& output);
 
 	bool has_bias;
 
-	InnerProductLayer():BaseLayer(){
-		this->has_bias = false;
-		return;
-	}
-
-	explicit InnerProductLayer(const LayerParam& param) : BaseLayer(param){
-		this->has_bias = param.atom_shapes.size() == 2;
+	InnerProductLayer(LayerParam* param) : BaseLayer(param){
+		this->has_bias = param->param_shape_.size() == 2;
 		return;
 	}
 };
