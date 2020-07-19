@@ -29,11 +29,11 @@ using namespace std;
 #endif
 
 enum LAYER_TYPE {INPUT_LAYER,
-SOFTMAX_LAYER,INNER_PRODUCT_LAYER,SIGMOID_LOSS_LAYER}; 
+SOFTMAX_LAYER,INNER_PRODUCT_LAYER,LOSS_CROSS_ENTROPY_LAYER}; 
 
 class LayerParam{
 public:
-	LayerParam(){};
+	LayerParam():param_num_(0){};
 	explicit LayerParam(const LayerParam& layer_param);
 //private:
 	//layer_tag

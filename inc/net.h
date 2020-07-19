@@ -1,4 +1,6 @@
 #include "net_common.h"
+#include "base_layer.h"
+#include "atom.h"
 
 #pragma once
 class Net{
@@ -8,11 +10,15 @@ public:
 
 	void Init(vector<LayerParam*> layer_params);
 
-	void ExecuteSequence();
+	//整理layers_执行顺序，同时初始化中间结果atom->data的大小
+	void ExecuteSequence(const vector<vector<int>>& max_input_dim);
 
-	void FeedData(const vector<Atom*> &input_data);
+	void FeedData(vector<Atom*> &input_data);
 	void Forward(float& loss);
 	void Backward();
+
+	void ShowNet();
+
 
 //private:
 	//layers

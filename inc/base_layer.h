@@ -6,9 +6,9 @@ class BaseLayer{
 public:
 	virtual void Forward(vector<Atom*>& input,vector<Atom*>& output) = 0;
 	virtual void Backward(vector<Atom*>& input,vector<Atom*>& output) = 0;
+	virtual vector<vector<int>> OutShape(const vector<vector<int> > input_shapes) = 0;
 
 	//constructed function
-	BaseLayer();
 	explicit BaseLayer(LayerParam* layer_param);
 
 //private:

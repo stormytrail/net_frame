@@ -52,3 +52,10 @@ void InnerProductLayer :: Backward(vector<Atom*>& input,vector<Atom*>& output){
 	}
 	return;
 }
+
+vector<vector<int> InnerProductLayer::OutShape(const vector<vector<int>> input_shape){
+	size_t batch_size = input_shape[0][0];
+	size_t out_dim = atoms_[0]->shape_[1];
+	vector<vector<int> > out_shape = vector<vector<int>>{vector<int>{batch_size,out_dim}};
+	return out_shape;
+}

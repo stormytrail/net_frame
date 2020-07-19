@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <math.h>
 
 void matrix_transpose(const float* src,size_t M,size_t N,float* dest);
 

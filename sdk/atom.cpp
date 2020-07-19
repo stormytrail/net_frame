@@ -1,7 +1,6 @@
 #include "atom.h"
 
 Atom::Atom(const string& atom_name,const vector<int>& shape){
-
 	atom_name_ = atom_name;
 	shape_.assign(shape.begin(),shape.end());
 	{
@@ -13,6 +12,28 @@ Atom::Atom(const string& atom_name,const vector<int>& shape){
 	diff_ = (float*)malloc(sizeof(float) * count_);
 
 	memset(diff_,0,sizeof(float) * count_);
+	return;
+}
+
+Atom::Atom(const string& atom_name){
+	atom_name_ = atom_name;
+
+	count_ = 0;
+	data = NULL;
+	diff_ = NULL;
+	return;
+}
+
+void Atom::Reshape(const vector<int>& atom_shape){
+
+	shape_.assign(atom_shape.begin(),atom_shape.end());
+	count_ = 1;
+	for (int i = 0;i < atom_shape.size();i++){
+		count_ *= atom_shape[i];
+	}
+
+	data = (float*)malloc(sizeof(float) * count_);
+	diff_ = (float*)malloc(sizeof(float) * count_);
 
 	return;
 }
@@ -57,5 +78,20 @@ void Atom :: RandomInit(){
 	for (int i = 0;i < count_;i++){
 		data[i] = (rand() % (2 * RANDOM_RANGE)) * 1.0 / RANDOM_RANGE - 1;
 	}
+	return;
+}
+
+void Atom :: PrintData(){
+	for (int i = 0;i < shape_[0];i++){
+		for (int j = 0;j < shape_[1];j++){
+			cout << data[i * shape_[1] + j] << " ";
+		}cout << endl;
+	}cout << endl;
+	return;
+}
+
+void Atom :: PrintName(){
+	cout << atom_name_ << endl;
+
 	return;
 }

@@ -1,9 +1,14 @@
+#include <assert.h>
+
 #include "net.h"
+
+#include "layers/layer_generator.h"
+
 
 Net::Net(){
 	srand(time(0));
 
-	this->layers_nums_ = 0;
+	this->layer_nums_ = 0;
 	this->layers_ = NULL;
 
 	return;
@@ -16,68 +21,70 @@ void Net :: Init(vector<LayerParam*> layer_params){
 	this->p_in_atom.resize(layer_nums_);
 	this->p_out_atom.resize(layer_nums_);
 
+	//生成中间结果保存atom
+	//保存在intermediate_atoms_
+	//地址映射保存在intermediate_index
 	for (size_t i = 0;i < layer_nums_;i++){
 		this->layers_[i] = (BaseLayer*)LayerGenerator(layer_params[i]);
-		size_t num_out = layer_params[i].output_atom_names.size();
+		size_t num_out = layer_params[i]->output_atom_names.size();
 
 		for (size_t index_out = 0;index_out < num_out;index_out++){
-			Atom* p_cur_atom = new Atom();
-			string &atom_name = layer_params[i].output_atom_names[index_out];
+			string &atom_name = layer_params[i]->output_atom_names[index_out];
+			Atom* p_cur_atom = new Atom(atom_name);
+
 			size_t atom_index = intermediate_atoms_.size();
 			this->intermediate_index.insert(pair<string,int>(atom_name,atom_index));
 			intermediate_atoms_.push_back(p_cur_atom);
 
 			p_out_atom[i].push_back(p_cur_atom);
-
-			outatom_2_layer_.insert(pair<string,string> (atom_name,layer_params[i]->layer_name_));
 		}
 	}
 
+	//将每层的输入和中间结果保存atom关联起来
 	for (size_t i = 0;i < layer_nums_;i++){
-		if (layer_params[i].layer_name_ == "Input"){
-			for (size_t pos_in_atom = 0;pos_in_atom < layer_params[i].output_atom_names.size();pos_in_atom++){
-				string &atom_name = layer_params[i].output_atom_names[pos_in_atom];
+		//单独处理输入层
+		if (layer_params[i]->layer_type_ == INPUT_LAYER){
+			for (size_t pos_in_atom = 0;pos_in_atom < layer_params[i]->output_atom_names.size();pos_in_atom++){
+				string &atom_name = layer_params[i]->output_atom_names[pos_in_atom];
 				size_t entry_intermidiatet_index = intermediate_index[atom_name];
-				entries_index.push_back(atom_name,pos_in_atom);
+				entries_index.insert(pair<string,int>(atom_name,pos_in_atom));
 				data_entries.push_back(intermediate_atoms_[entry_intermidiatet_index]);
 			}
 			continue;
 		}
 
-		size_t num_in = layer_params[i].input_atom_names.size();
+		size_t num_in = layer_params[i]->input_atom_names.size();
 		for (size_t index_in = 0;index_in < num_in;index_in++){
-			string &atom_name = layer_params[i].input_atom_names[index_in];
-			size_t atom_index = this->intermediate_atoms_[atom_name];
-			this->p_in_atom.push_back(intermediate_atoms_[atom_index]);
+			string &atom_name = layer_params[i]->input_atom_names[index_in];
+			size_t atom_index = this->intermediate_index[atom_name];
+			this->p_in_atom[i].push_back(intermediate_atoms_[atom_index]);
 
 		}
 	}
 	return;
 }
 
-void Net :: ExecuteSequence(){
-/*
-	map<string,vector<string>> in_degree;
-	map<string,vector<string>> out_degree;
+void Net :: ExecuteSequence(const vector<vector<int>>& max_input_dim){
+	//tolopy sort
 
-	for (size_t pos_layer = 0;pos_layer < layer_nums_;pos_layer++){
-		in_degree.insert(pair<string,vector<string>> (cur_name,vector<string>{}));
-		out_degree.insert(pair<string,vector<string>> (cur_name,vector<string>{}));
+
+
+
+
+	//resize the intermediate atom
+	vector<vector<int> > cur_dim;
+	for (size_t i = 0;i < max_input_dim.size();i++){
+		cur_dim[i] = 
+
 	}
 
-	vector<string> seq_name;
-	for (size_t pos_layer = 0;pos_layer < layer_nums_;pos_layer++){
-		string &cur_name = layers_[pos_layer]->layer_name;
-
-		size_t in_atom_num = layers_->layer_param_.input_atom_names.size();
-
-		for (size_t pos_atom = 0;pos_atom < in_atom_num;pos_atom++){
-			in_degree[cur_name].push_back(outatom_2_layer[]);
+	for (size_t i = 1;i < layer_nums_;i++){
+		cur_dim[i] = layers[i]->OutShape(cur_dim);
+		for (size_t j = 0;j < p_out_atom[i].size();j++){
+			p_out_atom[i][j]->Reshape(cur_dim[j]);
 		}
-
-		if (in_degree[cur_name].size() == 0){seq_name.push_back(cur_name);}
 	}
-*/
+
 	return;
 }
 
@@ -85,7 +92,10 @@ void Net :: ExecuteSequence(){
 //两次吧，一次是FeedData的时候，一次是析构的时候
 //传进来的atom，data指针赋值为NULL
 //实现将数值取出，然后和数据脱离，可以被任意操作
-void Net :: FeedData(const vector<Atom*> &input_data){
+void Net :: FeedData(vector<Atom*> &input_data){
+	cout << data_entries.size()<<endl;
+	cout << input_data.size() << endl;
+
 	assert(input_data.size() == data_entries.size());
 
 	//free the data space
@@ -94,12 +104,15 @@ void Net :: FeedData(const vector<Atom*> &input_data){
 	}
 
 	for (size_t pos_entry = 0;pos_entry < data_entries.size();pos_entry++){
-		string& cur_name = input_data[i].atom_name_;
-		map<string,int>::iterator iter = this->data_entries.find(cur_name);
-		assert(iter != this->data_entries.end());
+		string& cur_name = input_data[pos_entry]->atom_name_;
+
+		cout << cur_name << endl;
+
+		map<string,int>::iterator iter = this->entries_index.find(cur_name);
+		assert(iter != this->entries_index.end());
 
 		size_t correspond_index = iter->second;
-		data_entries[correspond_index] -> SetVal(input_data[i]);
+		data_entries[correspond_index] -> SetVal(input_data[pos_entry]);
 	}
 
 	return;
@@ -108,8 +121,38 @@ void Net :: FeedData(const vector<Atom*> &input_data){
 void Net :: Forward(float& loss){
 
 	for (size_t pos_layer = 1;pos_layer < layer_nums_;pos_layer++){
-		execute_seq[pos_layer]->Forward();
+		layers_[pos_layer]->Forward(p_in_atom[pos_layer],p_out_atom[pos_layer]);
+		cout << "layer " << pos_layer << ":"<<endl;
+		for (int i = 0;i < p_out_atom[pos_layer].size();i++){
+			p_out_atom[pos_layer][i]->PrintData();
+		}
+
 	}
 
+	return;
+}
+
+void Net :: ShowNet(){
+	for (int i = 0;i < layer_nums_;i++){
+		cout << "layer id : " << i << endl;
+		cout << "layer name : " << layers_[i]->layer_name_ << endl;
+		cout << "layer type : " << layers_[i]->layer_type_ << endl;
+
+		cout << "num input : " << layers_[i]->layer_param_->input_atom_names.size() << endl;
+		cout << "num output : "<< layers_[i]->layer_param_->output_atom_names.size() << endl;
+
+		cout << "in atom names : " << endl;
+		for (int j = 0;j < p_in_atom[i].size();j++){
+			(p_in_atom[i][j]->PrintName());
+		}cout << endl;
+
+		cout << "out atom names : " << endl;
+		for (int j = 0; j < p_out_atom[i].size();j++){
+			(p_out_atom[i][j] -> PrintName());
+		}cout << endl;
+
+
+		cout << endl;
+	}
 	return;
 }

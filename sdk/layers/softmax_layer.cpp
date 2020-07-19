@@ -1,6 +1,6 @@
 #include "layers/softmax_layer.h"
 
-void SoftmaxLayer :: Forward(const vector<Atom*>& input,const vector<Atom*>& output){
+void SoftmaxLayer :: Forward(vector<Atom*>& input,vector<Atom*>& output){
 	float* max_val = (float*)malloc(sizeof(float) * input[0]->shape_[0]);
 
 	{
@@ -32,7 +32,7 @@ void SoftmaxLayer :: Forward(const vector<Atom*>& input,const vector<Atom*>& out
 		}
 	}
 
-	float* sum_row = (float*)molloc(sizeof(float) * input[0]->shape_[0]);
+	float* sum_row = (float*)malloc(sizeof(float) * input[0]->shape_[0]);
 	memset(sum_row,0,sizeof(float) * input[0]->shape_[0]);
 	{
 		float* data = output[0]->data;
@@ -59,7 +59,7 @@ void SoftmaxLayer :: Forward(const vector<Atom*>& input,const vector<Atom*>& out
 	return;
 }
 
-void Backward(const vector<Atom*>& input,const vector<Atom*>& output){
+void SoftmaxLayer :: Backward(vector<Atom*>& input,vector<Atom*>& output){
 
 	size_t batch_size = input[0]->shape_[0];
 	size_t num_dim = input[0]->shape_[1];
@@ -101,4 +101,10 @@ void Backward(const vector<Atom*>& input,const vector<Atom*>& output){
 	free(softmax_diff_);
 
 	return;
+}
+
+vector<vector<int> > SoftmaxLayer :: OutShape(const vector<vector<int> > input_shapes){
+	vector<vector<int> > out_shape;
+	out_shape.assign(input_shapes.begin(),input_shapes.end());
+	return out_shape;
 }
