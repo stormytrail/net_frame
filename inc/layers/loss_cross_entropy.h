@@ -7,6 +7,7 @@ public:
 	//output[0] batch_size * 1
 	virtual void Forward(vector<Atom*>& input,vector<Atom*>& output);
 	virtual void Backward(vector<Atom*>& input,vector<Atom*>& output);
+	virtual vector<vector<int>> OutShape(const vector<vector<int> > input_shapes);
 
 	CrossEntropyLayer(LayerParam *param):BaseLayer(param){
 		return;

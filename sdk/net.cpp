@@ -66,20 +66,24 @@ void Net :: Init(vector<LayerParam*> layer_params){
 
 void Net :: ExecuteSequence(const vector<vector<int>>& max_input_dim){
 	//tolopy sort
-
-
-
-
-
-	//resize the intermediate atom
-	vector<vector<int> > cur_dim;
-	for (size_t i = 0;i < max_input_dim.size();i++){
-		cur_dim[i] = 
+	{
+		//not yet
 
 	}
 
+	//resize the intermediate atom
+	vector<vector<int> > cur_dim(max_input_dim.size(),vector<int>{MAX_BATCH_SIZE});
+
+
+	for (size_t i = 0;i < max_input_dim.size();i++){
+		cur_dim[i].insert(cur_dim[i].end(),max_input_dim[i].begin(),max_input_dim[i].end()); 
+	}
+
+
+
+
 	for (size_t i = 1;i < layer_nums_;i++){
-		cur_dim[i] = layers[i]->OutShape(cur_dim);
+		cur_dim = layers_[i]->OutShape(cur_dim);
 		for (size_t j = 0;j < p_out_atom[i].size();j++){
 			p_out_atom[i][j]->Reshape(cur_dim[j]);
 		}

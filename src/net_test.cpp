@@ -39,6 +39,9 @@ int main(){
 
 	Net net;
 	net.Init(layer_params);
+	
+	vector<vector<int>> max_input_dim(1,vector<int>{2});
+	net.ExecuteSequence(max_input_dim);
 
 	net.ShowNet();
 
