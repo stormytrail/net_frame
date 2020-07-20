@@ -62,6 +62,10 @@ int main(){
 	label.data[4]=1;label.data[5]=0;
 
 	vector<Atom*> inputs = {&data,&label};
+
+	cout << "check
+
+
 	net.FeedData(inputs);
 
 	net.layers_[1]->atoms_[0]->PrintData();

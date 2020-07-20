@@ -81,6 +81,13 @@ void Atom :: RandomInit(){
 	return;
 }
 
+void Atom :: AscendInit(){
+	for (int i = 0;i < count_;i++){
+		data[i] = i;
+	}
+	return;
+}
+
 void Atom :: PrintData(){
 	for (int i = 0;i < shape_[0];i++){
 		for (int j = 0;j < shape_[1];j++){
