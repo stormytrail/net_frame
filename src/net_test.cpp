@@ -63,11 +63,21 @@ int main(){
 
 	vector<Atom*> inputs = {&data,&label};
 
-	cout << "check
-
+	cout << "check input" << endl;
+	for (int i = 0;i < inputs.size();i++){
+		inputs[i]->PrintData();
+	}
+	cout << "finish check" << endl << endl;
 
 	net.FeedData(inputs);
+	cout << "check feed" << endl;
+	for (int i = 0;i < net.data_entries.size();i++){
+		net.data_entries[i]->PrintName();
+		net.data_entries[i]->PrintData();
+	}
+	cout << "finish check" << endl;
 
+	cout << "check parameter" << endl;
 	net.layers_[1]->atoms_[0]->PrintData();
 
 	float loss;

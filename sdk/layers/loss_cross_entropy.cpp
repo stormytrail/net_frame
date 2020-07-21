@@ -39,7 +39,7 @@ void CrossEntropyLayer :: Backward(vector<Atom*>& input,vector<Atom*>& output){
 }
 
 vector<vector<int>> CrossEntropyLayer :: OutShape(const vector<vector<int> > input_shapes){
-	size_t batch_size = input_shapes[0][0];
+	int batch_size = input_shapes[0][0];
 	vector<vector<int> > out_shape = vector<vector<int> >{vector<int>{batch_size,1}};
 	return out_shape;
 }

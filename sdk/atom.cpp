@@ -25,7 +25,6 @@ Atom::Atom(const string& atom_name){
 }
 
 void Atom::Reshape(const vector<int>& atom_shape){
-
 	shape_.assign(atom_shape.begin(),atom_shape.end());
 	count_ = 1;
 	for (int i = 0;i < atom_shape.size();i++){
@@ -35,6 +34,15 @@ void Atom::Reshape(const vector<int>& atom_shape){
 	data = (float*)malloc(sizeof(float) * count_);
 	diff_ = (float*)malloc(sizeof(float) * count_);
 
+	return;
+}
+
+void Atom :: AlterBatchsize(const int& batch_size){
+	shape_[0] = batch_size;
+	count_ = 1;
+	for (int i = 0;i < shape_.size();i++){
+		count_ *= shape_[i];
+	}
 	return;
 }
 

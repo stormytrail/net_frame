@@ -97,9 +97,6 @@ void Net :: ExecuteSequence(const vector<vector<int>>& max_input_dim){
 //传进来的atom，data指针赋值为NULL
 //实现将数值取出，然后和数据脱离，可以被任意操作
 void Net :: FeedData(vector<Atom*> &input_data){
-	cout << data_entries.size()<<endl;
-	cout << input_data.size() << endl;
-
 	assert(input_data.size() == data_entries.size());
 
 	//free the data space
@@ -110,13 +107,20 @@ void Net :: FeedData(vector<Atom*> &input_data){
 	for (size_t pos_entry = 0;pos_entry < data_entries.size();pos_entry++){
 		string& cur_name = input_data[pos_entry]->atom_name_;
 
-		cout << cur_name << endl;
-
 		map<string,int>::iterator iter = this->entries_index.find(cur_name);
 		assert(iter != this->entries_index.end());
 
 		size_t correspond_index = iter->second;
 		data_entries[correspond_index] -> SetVal(input_data[pos_entry]);
+	}
+
+	//change the batch_size of every intermediate atom according
+	//to the current batch_size
+	int cur_batch_size = input_data[0]->shape_[0];
+	for (int i = 1;i < layer_nums_;i++){
+		for (int j = 0;j < p_out_atom[i].size();j++){
+			p_out_atom[i][j]->AlterBatchsize(cur_batch_size);
+		}
 	}
 
 	return;

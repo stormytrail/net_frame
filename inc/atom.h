@@ -25,7 +25,7 @@ public:
 	Atom(const string& atom_name);					//complete
 
 	void Reshape(const vector<int>& atom_shape);			//complete
-
+	void AlterBatchsize(const int& batch_size);
 
 	//malloc space for data and diff_
 	void Init(PARAM_INIT_METHOD data_init_type);			//complete
