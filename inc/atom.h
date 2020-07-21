@@ -29,7 +29,7 @@ public:
 
 	//malloc space for data and diff_
 	void Init(PARAM_INIT_METHOD data_init_type);			//complete
-	inline void RandomInit();					//complete
+	void RandomInit();					//complete
 	void AscendInit();					//complete
 
 	//use diff_ to update data

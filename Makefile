@@ -15,6 +15,9 @@ d:src/softmax_test.cpp sdk/layers/softmax_layer.cpp sdk/math/matrix_operation.cp
 net:src/net_test.cpp sdk/layers/softmax_layer.cpp sdk/layers/loss_cross_entropy.cpp sdk/layers/inner_product_layer.cpp sdk/base_layer.cpp sdk/atom.cpp sdk/net.cpp sdk/math/matrix_operation.cpp
 	g++ -g -std=c++11 -o $@ $^ -I./inc
 
+demo:src/demo_test.cpp sdk/layers/softmax_layer.cpp sdk/layers/loss_cross_entropy.cpp sdk/layers/inner_product_layer.cpp sdk/base_layer.cpp sdk/atom.cpp sdk/net.cpp sdk/math/matrix_operation.cpp
+	g++ -g -std=c++11 -o $@ $^ -I./inc
+
 
 #我有点困惑，我创建了一个class A，然后在一个函数f里，参数是const A* a
 #然后想通过a去修改a的成员变量，报错
