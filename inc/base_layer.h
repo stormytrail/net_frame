@@ -17,7 +17,7 @@ public:
 	LAYER_TYPE layer_type_;
 	vector<Atom*> atoms_;
 
-	vector<float*> param_diff_buffer_;
+//	vector<float*> param_diff_buffer_;
 };
 
 

@@ -16,9 +16,12 @@ public:
 	void FeedData(vector<Atom*> &input_data);
 	void Forward(float& loss);
 	void Backward();
+	void ClearDiff();
+	void Update();
 
 	void ShowNet();
 
+	void PrintDetails();
 
 //private:
 	//layers

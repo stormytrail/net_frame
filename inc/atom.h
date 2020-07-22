@@ -34,6 +34,7 @@ public:
 
 	//use diff_ to update data
 	void Update();							//not yet
+	void ClearDiff();
 
 	//free the space of data and diff_
 	void Clear();							//complete
@@ -43,6 +44,7 @@ public:
 
 	void PrintData();
 	void PrintName();
+	void PrintDiff();
 
 };
 

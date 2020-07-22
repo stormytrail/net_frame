@@ -83,5 +83,11 @@ int main(){
 	float loss;
 	net.Forward(loss);
 
+	net.ClearDiff();
+
+	net.Backward();
+
+	net.Update();
+
 	return 0;
 }

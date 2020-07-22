@@ -127,19 +127,42 @@ void Net :: FeedData(vector<Atom*> &input_data){
 }
 
 void Net :: Forward(float& loss){
-
 	for (size_t pos_layer = 1;pos_layer < layer_nums_;pos_layer++){
 		layers_[pos_layer]->Forward(p_in_atom[pos_layer],p_out_atom[pos_layer]);
-		cout << "layer " << pos_layer << ":"<<endl;
-		for (int i = 0;i < p_out_atom[pos_layer].size();i++){
-			p_out_atom[pos_layer][i]->PrintData();
-		}
+//		cout << "layer " << pos_layer << ":"<<endl;
+//		for (int i = 0;i < p_out_atom[pos_layer].size();i++){
+//			p_out_atom[pos_layer][i]->PrintData();
+//		}
 
 	}
 
 	return;
 }
 
+void Net :: Backward(){
+	for (size_t pos_layer = layer_nums_ - 1;pos_layer > 0;pos_layer--){
+		layers_[pos_layer]->Backward(p_in_atom[pos_layer],p_out_atom[pos_layer]);
+	}
+	return;
+}
+
+void Net :: ClearDiff(){
+	for (size_t pos_layer = 1;pos_layer < layer_nums_;pos_layer++){
+		for (size_t pos_atom = 0;pos_atom < layers_[pos_layer]->atoms_.size();pos_atom++){
+			layers_[pos_layer]->atoms_[pos_atom]->ClearDiff();
+		}
+	}
+	return;
+}
+
+void Net :: Update(){
+	for (size_t pos_layer = 1;pos_layer < layer_nums_;pos_layer++){
+		for (size_t pos_atom = 0;pos_atom < layers_[pos_layer]->atoms_.size();pos_atom++){
+			layers_[pos_layer]->atoms_[pos_atom]->Update();
+		}
+	}
+	return;
+}
 void Net :: ShowNet(){
 	for (int i = 0;i < layer_nums_;i++){
 		cout << "layer id : " << i << endl;
@@ -162,5 +185,18 @@ void Net :: ShowNet(){
 
 		cout << endl;
 	}
+	return;
+}
+
+void Net::PrintDetails(){
+
+	for (int i = 1;i < layer_nums_;i++){
+		cout << "layer :" << i << endl;
+
+
+		cout << "finish" << endl << endl;
+	}
+
+
 	return;
 }

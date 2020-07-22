@@ -1,6 +1,6 @@
 #include "atom.h"
 
-Atom::Atom(const string& atom_name,const vector<int>& shape){
+Atom::Atom(const string& atom_name,const vector<int>& shape):lr_(0.0002){
 	atom_name_ = atom_name;
 	shape_.assign(shape.begin(),shape.end());
 	{
@@ -15,7 +15,7 @@ Atom::Atom(const string& atom_name,const vector<int>& shape){
 	return;
 }
 
-Atom::Atom(const string& atom_name){
+Atom::Atom(const string& atom_name):lr_(0.0002){
 	atom_name_ = atom_name;
 
 	count_ = 0;
@@ -82,6 +82,11 @@ void Atom::Update(){
 	return;
 }
 
+void Atom::ClearDiff(){
+	memset(diff_,0,sizeof(float) * count_);
+	return;
+}
+
 void Atom :: RandomInit(){
 	for (int i = 0;i < count_;i++){
 		data[i] = (rand() % (2 * RANDOM_RANGE)) * 1.0 / RANDOM_RANGE - 1;
@@ -108,5 +113,14 @@ void Atom :: PrintData(){
 void Atom :: PrintName(){
 	cout << atom_name_ << endl;
 
+	return;
+}
+
+void Atom :: PrintDiff(){
+	for (int i = 0;i < shape_[0];i++){
+		for (int j = 0;j < shape_[1];j++){
+			cout << diff_[i * shape_[1] + j] << " ";
+		}cout << endl;
+	}
 	return;
 }

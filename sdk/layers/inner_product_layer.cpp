@@ -21,19 +21,19 @@ void InnerProductLayer :: Backward(vector<Atom*>& input,vector<Atom*>& output){
 
 		//xT * e
 		size_t M = input[0]->shape_[1],K = input[0]->shape_[0],N = output[0]->shape_[1];
-		float *A = x_trans,*B = output[0]->diff_,*C = this->param_diff_buffer_[0];
+		float *A = x_trans,*B = output[0]->diff_,*C = atoms_[0]->diff_;
 		c_sgemm(M,N,K,1,A,K,B,N,0,C,N);
 
 
-		for (size_t i = 0;i < batch_size;i++){
-			for (size_t j = 0;j < atoms_[0]->count_;j++){
-				atoms_[0]->diff_[j] += C[i * atoms_[0]->count_ + j];
-			}
-		}
+//		for (size_t i = 0;i < batch_size;i++){
+//			for (size_t j = 0;j < atoms_[0]->count_;j++){
+//				atoms_[0]->diff_[j] += C[i * atoms_[0]->count_ + j];
+//			}
+//		}
 
-		for (size_t i = 0;i < atoms_[0]->count_;i++){
-			atoms_[0]->diff_[i] = batch_size;
-		}
+//		for (size_t i = 0;i < atoms_[0]->count_;i++){
+//			atoms_[0]->diff_[i] = batch_size;
+//		}
 
 		free(x_trans);
 	}
