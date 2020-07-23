@@ -15,7 +15,11 @@ d:src/softmax_test.cpp sdk/layers/softmax_layer.cpp sdk/math/matrix_operation.cp
 net:src/net_test.cpp sdk/layers/softmax_layer.cpp sdk/layers/loss_cross_entropy.cpp sdk/layers/inner_product_layer.cpp sdk/base_layer.cpp sdk/atom.cpp sdk/net.cpp sdk/math/matrix_operation.cpp
 	g++ -g -std=c++11 -o $@ $^ -I./inc
 
-demo:src/demo_test.cpp sdk/layers/softmax_layer.cpp sdk/layers/loss_cross_entropy.cpp sdk/layers/inner_product_layer.cpp sdk/base_layer.cpp sdk/atom.cpp sdk/net.cpp sdk/math/matrix_operation.cpp
+demo:src/demo_test_x1_x2.cpp sdk/layers/softmax_layer.cpp sdk/layers/loss_cross_entropy.cpp sdk/layers/inner_product_layer.cpp sdk/base_layer.cpp sdk/atom.cpp sdk/net.cpp sdk/math/matrix_operation.cpp
+	g++ -g -std=c++11 -o $@ $^ -I./inc
+
+
+demo_3:src/demo_test_x1_x2_x3.cpp sdk/layers/softmax_layer.cpp sdk/layers/loss_cross_entropy.cpp sdk/layers/inner_product_layer.cpp sdk/base_layer.cpp sdk/atom.cpp sdk/net.cpp sdk/math/matrix_operation.cpp
 	g++ -g -std=c++11 -o $@ $^ -I./inc
 
 

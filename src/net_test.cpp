@@ -43,7 +43,7 @@ int main(){
 	vector<vector<int>> max_input_dim(1,vector<int>{2});
 	net.ExecuteSequence(max_input_dim);
 
-	net.ShowNet();
+//	net.ShowNet();
 
 	//line : x + y = 0
 	Atom data("data",vector<int>{3,2});
@@ -63,31 +63,44 @@ int main(){
 
 	vector<Atom*> inputs = {&data,&label};
 
-	cout << "check input" << endl;
-	for (int i = 0;i < inputs.size();i++){
-		inputs[i]->PrintData();
-	}
-	cout << "finish check" << endl << endl;
+//	cout << "check input" << endl;
+//	for (int i = 0;i < inputs.size();i++){
+//		inputs[i]->PrintData();
+//	}
+//	cout << "finish check" << endl << endl;
 
 	net.FeedData(inputs);
-	cout << "check feed" << endl;
-	for (int i = 0;i < net.data_entries.size();i++){
-		net.data_entries[i]->PrintName();
-		net.data_entries[i]->PrintData();
-	}
-	cout << "finish check" << endl;
+//	cout << "check feed" << endl;
+//	for (int i = 0;i < net.data_entries.size();i++){
+//		net.data_entries[i]->PrintName();
+//		net.data_entries[i]->PrintData();
+//	}
+//	cout << "finish check" << endl;
 
-	cout << "check parameter" << endl;
-	net.layers_[1]->atoms_[0]->PrintData();
+//	cout << "check parameter" << endl;
+//	net.layers_[1]->atoms_[0]->PrintData();
 
 	float loss;
 	net.Forward(loss);
 
+//	net.CheckForward();
+
+	cout << "finish forward" << endl;
+
 	net.ClearDiff();
+
+	cout << "finish clear diff" << endl;
 
 	net.Backward();
 
+	net.PrintDetails();
+
+	cout << "finish backward" << endl;
+
 	net.Update();
 
+	net.layers_[1]->atoms_[0]->PrintData();
+
+	cout << "finish updata" << endl;
 	return 0;
 }

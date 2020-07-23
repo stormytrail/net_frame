@@ -70,14 +70,16 @@ void Atom :: Clear(){
 void Atom::SetVal(Atom* val){
 	this->shape_.assign(val->shape_.begin(),val->shape_.end());
 	this->data = val -> data;
+	this->diff_ = val-> diff_;
 	this->atom_name_ = val->atom_name_;
 	val -> data = NULL;
+	val -> diff_ = NULL;
 	return;
 }
 
 void Atom::Update(){
 	for (size_t i = 0;i < count_;i++){
-		data[i] += diff_[i] * lr_;
+		data[i] -= diff_[i] * lr_;
 	}
 	return;
 }
@@ -106,7 +108,7 @@ void Atom :: PrintData(){
 		for (int j = 0;j < shape_[1];j++){
 			cout << data[i * shape_[1] + j] << " ";
 		}cout << endl;
-	}cout << endl;
+	}
 	return;
 }
 
@@ -122,5 +124,12 @@ void Atom :: PrintDiff(){
 			cout << diff_[i * shape_[1] + j] << " ";
 		}cout << endl;
 	}
+	return;
+}
+
+void Atom::PrintShape(){
+	for (int i = 0;i < shape_.size();i++){
+		cout << shape_[i] << " ";
+	}cout << endl;
 	return;
 }

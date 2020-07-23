@@ -66,6 +66,51 @@ void SoftmaxLayer :: Backward(vector<Atom*>& input,vector<Atom*>& output){
 
 	float* softmax_diff_ = (float*)malloc(sizeof(float) * num_dim * num_dim);
 
+	float* softmax_output = output[0]->data;
+	float* grad_softmax_shifter = output[0]->diff_;
+	float* grad_input_shifter = input[0]->diff_;
+
+	for (size_t batch_index = 0;batch_index < batch_size;batch_index++){
+		for (size_t i = 0;i < num_dim;i++){
+			for (size_t j = 0;j < num_dim;j++){
+				if (i == j){
+					softmax_diff_[i * num_dim + j] = softmax_output[i] * (1 - softmax_output[i]);
+				}
+				else{
+					softmax_diff_[i*num_dim+j]=0-softmax_output[i] * softmax_output[j];
+				}
+			}
+		}
+
+//		cout << "matrix" << endl;
+//		for (int i = 0;i < 2;i++){
+//			for (int j = 0;j < 2;j++){
+//				cout << softmax_diff_[i * 2 + j] << " ";
+//			}cout << endl;
+//		}cout << endl;
+		{
+			size_t M=1,N = num_dim,K=num_dim;
+			float* A = grad_softmax_shifter;
+			float* B = softmax_diff_;
+			float* C = grad_input_shifter;
+
+			c_sgemm(M,N,K,1,A,K,B,N,0,C,N);
+		}
+
+//		for (int i = 0;i < 2;i++){
+//			cout << grad_softmax_shifter[i] << " ";
+//		}cout << endl;
+
+//		for (int i = 0;i < 2;i++){
+//			cout << grad_input_shifter[i] << " ";
+//		}cout << endl;
+
+		softmax_output += num_dim;
+		grad_softmax_shifter += num_dim;
+		grad_input_shifter += num_dim;
+	}
+
+/*
 	float* softmax_diff_shifter = softmax_diff_;
 	float* output_data_shifter = output[0]->data;
 	float* input_diff_shifter = input[0]->diff_;
@@ -84,6 +129,7 @@ void SoftmaxLayer :: Backward(vector<Atom*>& input,vector<Atom*>& output){
 			softmax_diff_shifter += num_dim;
 		}
 
+
 		{
 			size_t M = 1,N = num_dim,K = num_dim;
 			float* A = output_diff_shifter;
@@ -97,7 +143,7 @@ void SoftmaxLayer :: Backward(vector<Atom*>& input,vector<Atom*>& output){
 		output_diff_shifter += num_dim;
 		softmax_diff_shifter = softmax_diff_;
 	}
-
+*/
 	free(softmax_diff_);
 
 	return;

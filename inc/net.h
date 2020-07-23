@@ -23,6 +23,8 @@ public:
 
 	void PrintDetails();
 
+	void CheckForward();
+
 //private:
 	//layers
 	size_t layer_nums_;

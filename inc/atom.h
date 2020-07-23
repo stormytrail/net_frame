@@ -45,6 +45,7 @@ public:
 	void PrintData();
 	void PrintName();
 	void PrintDiff();
+	void PrintShape();
 
 };
 

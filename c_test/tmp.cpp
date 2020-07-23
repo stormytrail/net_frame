@@ -11,9 +11,21 @@
 using namespace std;
 
 int main(){
+	float* val = (float*)malloc(sizeof(float) * 10);
+	vector<float> a = {1,2,3,4,5,6};
+	for (int i = 0;i < a.size();i++){
+		val[i] = a[i];
+	}
+
+	float* val_1 = val + 2;
+	cout << val_1[0] << endl;
+
+
+/*
+	//assert
 	int a = 2;
 	assert(a==2);
-
+*/
 /*
 	//size_t test
 	size_t a = 10;

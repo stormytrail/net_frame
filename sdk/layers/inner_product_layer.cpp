@@ -37,19 +37,39 @@ void InnerProductLayer :: Backward(vector<Atom*>& input,vector<Atom*>& output){
 
 		free(x_trans);
 	}
+
+//	cout << "finish w" << endl;
+
 	
 	//x
 	{
 		float* w_trans = (float*)malloc(sizeof(float) * this->atoms_[0]->count_);
 		matrix_transpose(atoms_[0]->data,atoms_[0]->shape_[0],atoms_[0]->shape_[1],w_trans);
 
+
+//		cout << "finish transpose" << endl;
+
 		//e * wT
 		size_t M = output[0]->shape_[0],K = output[0]->shape_[1],N = this->atoms_[0]->shape_[1];
 		float *A = output[0]->diff_,*B = w_trans,*C = input[0]->diff_;
+
+//		cout << "before dot" << endl;
+
+
+//		output[0]->PrintDiff();
+
+//		cout << input[0]->diff_ << endl;
+
+
 		c_sgemm(M,N,K,1,A,K,B,N,0,C,N);
+
+//		cout << "finish dot " << endl;
 
 		free(w_trans);
 	}
+
+//	cout << "finish x" << endl;
+
 	return;
 }
 

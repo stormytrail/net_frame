@@ -45,32 +45,8 @@ int main(){
 	vector<vector<int>> max_input_dim(1,vector<int>{2});
 	net.ExecuteSequence(max_input_dim);
 
-	//line : x + y = 0
-	Atom data("data",vector<int>{3,2});
-	Atom label("label",vector<int>{3,2});
-
-	//(1,1)
-	data.data[0] = 1;data.data[1] = 1;
-	label.data[0] = 1;label.data[1]=0;
-
-	//(-1,-1)
-	data.data[2]=-1;data.data[3]=-1;
-	label.data[2]=0;label.data[3] = 1;
-
-	//(2,1)
-	data.data[4]=2;data.data[5]=1;
-	label.data[4]=1;label.data[5]=0;
-
-	vector<Atom*> inputs = {&data,&label};
-
-	net.FeedData(inputs);
-
-	float loss;
-	net.Forward(loss);
-
-
 	//generate train data
-	int num_train = 10000;
+	int num_train = 1000;
 	float* train_data = (float*)malloc(sizeof(float) * 2 * num_train);
 	float* train_label = (float*)malloc(sizeof(float) * 2 * num_train);
 
@@ -93,15 +69,54 @@ int main(){
 	int num_iter = 10;
 	int num_steps = num_train / MAX_BATCH_SIZE + (num_train % MAX_BATCH_SIZE ? 1 : 0);
 	while (num_iter--){
+
+		float* train_data_shifter = train_data;
+		float* train_label_shifter = train_label;
+
+		float iter_loss;
+
 		for (int i = 0;i < num_steps;i++){
 			int num_res = num_train - MAX_BATCH_SIZE * i;
 			int cur_batch_size = num_res > MAX_BATCH_SIZE ? MAX_BATCH_SIZE : num_res;
 
+//			cout << cur_batch_size << endl;
+
+
 			Atom data("data",vector<int>{cur_batch_size,2});
 			Atom label("label",vector<int>{cur_batch_size,2});
 
+			memcpy(data.data,train_data_shifter,sizeof(float) * cur_batch_size*2);
+			memcpy(label.data,train_label_shifter,sizeof(float) * cur_batch_size*2);
+			train_data_shifter += cur_batch_size * 2;
+			train_label_shifter += cur_batch_size * 2;
+
+			vector<Atom*> inputs = {&data,&label};
+			net.FeedData(inputs);
+
+//			cout << "finish forward" << endl;
+
+			float loss = 0;
+			net.Forward(loss);
+
+//			cout << loss << endl;
+			iter_loss = loss;
+
+			net.ClearDiff();
+//			cout << "finish clear diff" << endl;
+
+			net.Backward();
+
+//			cout << "finish backward" << endl;
+
+			net.Update();
+
+//			cout << "finish update" << endl;
+
 		}
+		cout << iter_loss << endl;
 	}
+
+	net.layers_[1]->atoms_[0]->PrintData();
 
 	return 0;
 }

@@ -129,18 +129,18 @@ void Net :: FeedData(vector<Atom*> &input_data){
 void Net :: Forward(float& loss){
 	for (size_t pos_layer = 1;pos_layer < layer_nums_;pos_layer++){
 		layers_[pos_layer]->Forward(p_in_atom[pos_layer],p_out_atom[pos_layer]);
-//		cout << "layer " << pos_layer << ":"<<endl;
-//		for (int i = 0;i < p_out_atom[pos_layer].size();i++){
-//			p_out_atom[pos_layer][i]->PrintData();
-//		}
+	}
 
+	loss = 0;
+	for (size_t i = 0;i < p_out_atom[layer_nums_ - 1][0]->shape_[0];i++){
+		loss += p_out_atom[layer_nums_ - 1][0]->data[i];
 	}
 
 	return;
 }
 
 void Net :: Backward(){
-	for (size_t pos_layer = layer_nums_ - 1;pos_layer > 0;pos_layer--){
+	for (size_t pos_layer = layer_nums_ - 1;pos_layer >= 1;pos_layer--){
 		layers_[pos_layer]->Backward(p_in_atom[pos_layer],p_out_atom[pos_layer]);
 	}
 	return;
@@ -188,15 +188,67 @@ void Net :: ShowNet(){
 	return;
 }
 
+void Net::CheckForward(){
+	cout << "forward details" << endl;
+	for (int i = 1;i < layer_nums_;i++){
+		cout << "layer :" << i << endl;
+		cout <<"input" << endl;
+		for (int j = 0;j < p_in_atom[i].size();j++){
+			p_in_atom[i][j]->PrintShape();
+			p_in_atom[i][j]->PrintData();
+			cout << endl;
+		}
+
+		cout << "param" << endl;
+		for (int j = 0;j < layers_[i]->atoms_.size();j++){
+			layers_[i]->atoms_[j]->PrintShape();
+			layers_[i]->atoms_[j]->PrintData();
+			cout << endl;
+		}
+
+		cout << "output" << endl;
+		for (int j = 0;j < p_out_atom[i].size();j++){
+			p_out_atom[i][j]->PrintShape();
+			p_out_atom[i][j] ->PrintData();
+			cout << endl;
+		}
+	}
+	cout << "detail finish" << endl;
+	return;
+}
+
+
 void Net::PrintDetails(){
 
 	for (int i = 1;i < layer_nums_;i++){
 		cout << "layer :" << i << endl;
 
+		cout << "input:" << endl;
+		for (int j = 0;j < p_in_atom[i].size();j++){
+			cout << "data" << endl;
+			p_in_atom[i][j]->PrintData();
+			cout << "diff_" << endl;
+			p_in_atom[i][j] -> PrintDiff();
+			cout << endl;
+		}
 
+		cout << "parameter:" << endl;
+		for (int j = 0;j < layers_[i]->atoms_.size();j++){
+			cout << "weight" << endl;
+			layers_[i]->atoms_[j]->PrintData();
+			cout << "diff_" << endl;
+			layers_[i]->atoms_[j]->PrintDiff();
+			cout << endl;
+		}
+
+		cout << "output:" << endl;
+		for (int j = 0;j < p_out_atom[i].size();j++){
+			cout << "data" << endl;
+			p_out_atom[i][j]->PrintData();
+			cout << "diff" << endl;
+			p_out_atom[i][j] -> PrintDiff();
+		}
 		cout << "finish" << endl << endl;
 	}
-
-
 	return;
 }
