@@ -33,7 +33,7 @@ int main(){
 
 	int m,n,k;
 	int repeat_time = 20;
-	int range_low = 50,range_high = 500,stride = 50;
+	int range_low = 50,range_high = 600,stride = 50;
 
 	double gflops;
 

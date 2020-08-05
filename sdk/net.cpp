@@ -1,9 +1,6 @@
 #include <assert.h>
-
 #include "net.h"
-
 #include "layers/layer_generator.h"
-
 
 Net::Net(){
 	srand(time(0));
