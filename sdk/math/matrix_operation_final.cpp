@@ -19,5 +19,19 @@ void c_sgemm(size_t M,size_t N,size_t K,float alpha,float* A,size_t lda,float* B
 		}
 	}
 
+	m
+
+	
+
+
+
+
+
+
+
+
+
+
+
 	return;
 }
