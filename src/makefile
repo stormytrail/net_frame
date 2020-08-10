@@ -7,7 +7,7 @@ include = -I../inc
 all:efficiency accuracy
 
 efficiency : matrix_mul_compare.cpp ../sdk/math/${math_code}
-	g++ -O3 -o $@ $^ ${include}
+	g++  -o $@ $^ ${include}
 
 accuracy : matrix_one.cpp ../sdk/math/${math_code}
 	g++ -O3 -o $@ $^ ${include}
