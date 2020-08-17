@@ -6,3 +6,26 @@ matrix_operation_version1_row_first.cpp
 
 matrix_operation_version1_col_first.cpp
 	在上一个代码里面，B矩阵的取值不是连续的，浪费cache，将B的列临时存储，然后遍历A的行
+
+matrix_operation_version8.cpp
+	4行4列
+	使用register
+
+matrix_operation_version9.cpp
+	4行4列
+	使用m128
+
+matrix_operation_version10.cpp
+	加入block
+	随着矩阵变大，数据无法放在l2 cache，block后能让数据放在l2 cache
+	说l2 cache的大小都是以MB为单位，1Mb可以放一个500*500的float矩阵
+
+matrix_operation_version11.cpp
+	加入packing
+	对B进行了packing
+
+matrix_operation_version12.cpp
+	对A进行packing
+
+
+

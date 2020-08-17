@@ -42,11 +42,23 @@ void print_matrix(int m,int n,float* a){
 	return;
 }
 
+float diff_count(int m,int n,float* a,float* b){
+	float ans = 0;
+	for (int i = 0;i < m;i++){
+		for (int j = 0;j < n;j++){
+			float gap = a[i*n+j] - b[i*n+j];
+
+			ans += gap < 0 ? 0-gap : gap;
+		}
+	}
+	return ans;
+}
+
 int main(){
 
 	int m,n,k;
 	int repeat_time = 20;
-	int range_low = 50,range_high = 600,stride = 50;
+	int range_low = 40,range_high = 600,stride = 40;
 
 	double gflops;
 
@@ -55,6 +67,8 @@ int main(){
 		float *a = (float*)malloc(sizeof(float) * m * k);
 		float *b = (float*)malloc(sizeof(float) * k * n);
 		float *c = (float*)malloc(sizeof(float) * m * n);
+
+		float *c_common = (float*)malloc(sizeof(float) * m * n);
 
 		if (false){
 			ascend_matrix(m,k,a);
@@ -66,7 +80,7 @@ int main(){
 			random_matrix(m,k,a);
 			random_matrix(k,n,b);
 		}
-	//	common_c_sgemm(m,n,k,1,a,m,b,k,0,c,m);
+		common_c_sgemm(m,n,k,1,a,m,b,k,0,c_common,m);
 
 //		print_matrix(m,n,c);
 	
@@ -74,6 +88,9 @@ int main(){
 
 		double time_best;
 		double start_time,end_time,duration;
+
+		double diff;
+
 		for (int rep = 0;rep < repeat_time;rep++){
 
 			start_time = get_time();
@@ -83,13 +100,14 @@ int main(){
 
 			if (rep == 0){
 				time_best = duration;
+				diff = diff_count(m,n,c,c_common);
 				//print_matrix(m,n,c);
 			}
 			else{
 				time_best = time_best < duration ? time_best : duration;
 			}
 		}
-		printf("%d %lf %lf\n",i,gflops / time_best,time_best);
+		printf("%d %f %f %f\n",i,gflops / time_best,time_best,diff);
 		free(a);free(b);free(c);
 	}
 
