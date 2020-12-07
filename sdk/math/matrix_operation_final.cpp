@@ -16,10 +16,12 @@ void matrix_transpose(const float* src,size_t M,size_t N,float* dest){
 
 void c_sgemm(size_t M,size_t N,size_t K,float alpha,float* A,size_t lda,float* B,size_t ldb,float beta,float* C,size_t ldc){
 	int i,p;
-	for (p = 0;p < K;p+=kc){
-		pk = min(kc,K-p)
-		
-	}
+
+	for (ms = 0;ms < M;ms += 
+
+
+
+
 	return;
 }
 
